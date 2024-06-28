@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package dns;
+option go_package = "github.com/lilpipidron/Host-DNS-Updater/service/dns";
+import "google/protobuf/empty.proto";
+
+service DNSService{
+  rpc GetListDNS(google.protobuf.Empty) returns (DNSListReply) {}
+  rpc DeleteDNS(DeleteDNSRequest) returns (DeleteDNSReply) {}
+  rpc AddDNS(AddDNSRequest) returns (AddDNSReply) {}
+}
+
+message DNSListReply {
+  repeated string dnsList = 1;
+}
+
+message DeleteDNSRequest {
+  string dns = 1;
+}
+
+message DeleteDNSReply {
+  string error_message = 1;
+}
+
+message AddDNSRequest {
+  string dns = 1;
+}
+
+message AddDNSReply {
+  string error_message = 1;
+}
