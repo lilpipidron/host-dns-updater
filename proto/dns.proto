@@ -1,13 +1,28 @@
 syntax = "proto3";
 
 package dns;
-option go_package = "github.com/lilpipidron/Host-DNS-Updater/service/dns";
+option go_package = "service/dns";
 import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
 
 service DNSService{
-  rpc GetListDNS(google.protobuf.Empty) returns (DNSListReply) {}
-  rpc DeleteDNS(DeleteDNSRequest) returns (DeleteDNSReply) {}
-  rpc AddDNS(AddDNSRequest) returns (AddDNSReply) {}
+  rpc GetListDNS(google.protobuf.Empty) returns (DNSListReply) {
+      option(google.api.http) = {
+        get: "/dns"
+      };
+    }
+  rpc DeleteDNS(DeleteDNSRequest) returns (DeleteDNSReply) {
+    option (google.api.http) = {
+        delete: "/dns/{dns}"
+    };
+  }
+
+  rpc AddDNS(AddDNSRequest) returns (AddDNSReply) {
+      option(google.api.http) = {
+        post: "/dns"
+        body: "*"
+      };
+    }
 }
 
 message DNSListReply {

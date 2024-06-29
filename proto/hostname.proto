@@ -1,9 +1,14 @@
 syntax = "proto3";
 
 package hostname;
-option go_package = "github.com/lilpipidron/Host-DNS-Updater/service/hostname";
+option go_package = "service/hostname";
+import "google/api/annotations.proto";
 service HostnameService {
-  rpc SetHostName(SetHostnameRequest) returns (SetHostnameReply) {}
+  rpc SetHostName(SetHostnameRequest) returns (SetHostnameReply) {
+      option(google.api.http) = {
+        post: "/hostname"
+      };
+    }
 }
 
 message SetHostnameRequest {
