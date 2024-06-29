@@ -43,6 +43,8 @@ func (s *Service) GetListDNS(ctx context.Context, empty *emptypb.Empty) (*dnsp.D
 		return nil, err
 	}
 
+	log.Info("Successfully get dns list")
+
 	return &dnsp.DNSListReply{DnsList: list}, nil
 }
 
@@ -60,5 +62,54 @@ func (s *Service) AddDNS(ctx context.Context, req *dnsp.AddDNSRequest) (*dnsp.Ad
 		return &dnsp.AddDNSReply{ErrorMessage: err.Error()}, err
 	}
 
+	log.Info("Successfully added DNS", "dns", req.Dns)
+
 	return &dnsp.AddDNSReply{ErrorMessage: ""}, nil
+}
+
+func (s *Service) DeleteDNS(ctx context.Context, req *dnsp.DeleteDNSRequest) (*dnsp.DeleteDNSReply, error) {
+	file, err := os.Open("/etc/resolv.conf")
+	if err != nil {
+		log.Error("Failed open file", "error", err)
+		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if !strings.Contains(line, req.Dns) {
+			lines = append(lines, line)
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Error("Failed read file", "error", err)
+		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+	}
+
+	outputFile, err := os.OpenFile("/etc/resolv.conf", os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		log.Error("Failed open file", "error", err)
+		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+	}
+	defer outputFile.Close()
+
+	writer := bufio.NewWriter(outputFile)
+	for _, line := range lines {
+		_, err := writer.WriteString(line + "\n")
+		if err != nil {
+			log.Error("Failed write file", "error", err)
+			return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+		}
+	}
+
+	if err := writer.Flush(); err != nil {
+		log.Error("Failed flush", "error", err)
+		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+	}
+
+	log.Info("Successfully deleted DNS", "dns", req.Dns)
+	return &dnsp.DeleteDNSReply{ErrorMessage: ""}, nil
 }
