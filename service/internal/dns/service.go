@@ -14,9 +14,9 @@ type Service struct {
 	dnsp.DNSServiceServer
 }
 
-/*GetListDNS(context.Context, *emptypb.Empty) (*DNSListReply, error)
+/*
 DeleteDNS(context.Context, *DeleteDNSRequest) (*DeleteDNSReply, error)
-AddDNS(context.Context, *AddDNSRequest) (*AddDNSReply, error)*/
+*/
 
 func (s *Service) GetListDNS(ctx context.Context, empty *emptypb.Empty) (*dnsp.DNSListReply, error) {
 	file, err := os.Open("/etc/resolv.conf")
@@ -44,4 +44,21 @@ func (s *Service) GetListDNS(ctx context.Context, empty *emptypb.Empty) (*dnsp.D
 	}
 
 	return &dnsp.DNSListReply{DnsList: list}, nil
+}
+
+func (s *Service) AddDNS(ctx context.Context, req *dnsp.AddDNSRequest) (*dnsp.AddDNSReply, error) {
+	file, err := os.OpenFile("/etc/resolv.conf", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Error("Failed open file", "error", err)
+		return &dnsp.AddDNSReply{ErrorMessage: err.Error()}, err
+	}
+	defer file.Close()
+
+	_, err = file.WriteString("nameserver " + req.Dns + "\n")
+	if err != nil {
+		log.Error("Failed write file", "error", err)
+		return &dnsp.AddDNSReply{ErrorMessage: err.Error()}, err
+	}
+
+	return &dnsp.AddDNSReply{ErrorMessage: ""}, nil
 }
