@@ -1,0 +1,167 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "dns.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "DNSService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/dns": {
+      "get": {
+        "operationId": "DNSService_GetListDNS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/dnsDNSListReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "DNSService"
+        ]
+      },
+      "post": {
+        "operationId": "DNSService_AddDNS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/dnsAddDNSReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/dnsAddDNSRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DNSService"
+        ]
+      }
+    },
+    "/dns/{dns}": {
+      "delete": {
+        "operationId": "DNSService_DeleteDNS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/dnsDeleteDNSReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dns",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DNSService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "dnsAddDNSReply": {
+      "type": "object",
+      "properties": {
+        "errorMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "dnsAddDNSRequest": {
+      "type": "object",
+      "properties": {
+        "dns": {
+          "type": "string"
+        }
+      }
+    },
+    "dnsDNSListReply": {
+      "type": "object",
+      "properties": {
+        "dnsList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dnsDeleteDNSReply": {
+      "type": "object",
+      "properties": {
+        "errorMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
