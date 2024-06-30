@@ -1,4 +1,4 @@
-# Host-DNS-Updater
+# host-dns-updater
 
 ## Usage
 
@@ -9,7 +9,7 @@
 
 ### Build service
 ```
-    cd Host-DNS-Updateer/service/cmd
+    cd host-dns-updater/service/cmd
     go build -o service
 ```
 
