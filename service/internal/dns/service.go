@@ -14,10 +14,6 @@ type Service struct {
 	dnsp.DNSServiceServer
 }
 
-/*
-DeleteDNS(context.Context, *DeleteDNSRequest) (*DeleteDNSReply, error)
-*/
-
 func (s *Service) GetListDNS(ctx context.Context, empty *emptypb.Empty) (*dnsp.DNSListReply, error) {
 	file, err := os.Open("/etc/resolv.conf")
 	if err != nil {
@@ -48,30 +44,30 @@ func (s *Service) GetListDNS(ctx context.Context, empty *emptypb.Empty) (*dnsp.D
 	return &dnsp.DNSListReply{DnsList: list}, nil
 }
 
-func (s *Service) AddDNS(ctx context.Context, req *dnsp.AddDNSRequest) (*dnsp.AddDNSReply, error) {
+func (s *Service) AddDNS(ctx context.Context, req *dnsp.AddDNSRequest) (*emptypb.Empty, error) {
 	file, err := os.OpenFile("/etc/resolv.conf", os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Error("Failed open file", "error", err)
-		return &dnsp.AddDNSReply{ErrorMessage: err.Error()}, err
+		return &emptypb.Empty{}, err
 	}
 	defer file.Close()
 
 	_, err = file.WriteString("nameserver " + req.Dns + "\n")
 	if err != nil {
 		log.Error("Failed write file", "error", err)
-		return &dnsp.AddDNSReply{ErrorMessage: err.Error()}, err
+		return &emptypb.Empty{}, err
 	}
 
 	log.Info("Successfully added DNS", "dns", req.Dns)
 
-	return &dnsp.AddDNSReply{ErrorMessage: ""}, nil
+	return &emptypb.Empty{}, nil
 }
 
-func (s *Service) DeleteDNS(ctx context.Context, req *dnsp.DeleteDNSRequest) (*dnsp.DeleteDNSReply, error) {
+func (s *Service) DeleteDNS(ctx context.Context, req *dnsp.DeleteDNSRequest) (*emptypb.Empty, error) {
 	file, err := os.Open("/etc/resolv.conf")
 	if err != nil {
 		log.Error("Failed open file", "error", err)
-		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+		return &emptypb.Empty{}, err
 	}
 	defer file.Close()
 
@@ -86,13 +82,13 @@ func (s *Service) DeleteDNS(ctx context.Context, req *dnsp.DeleteDNSRequest) (*d
 
 	if err := scanner.Err(); err != nil {
 		log.Error("Failed read file", "error", err)
-		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+		return &emptypb.Empty{}, err
 	}
 
 	outputFile, err := os.OpenFile("/etc/resolv.conf", os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		log.Error("Failed open file", "error", err)
-		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+		return &emptypb.Empty{}, err
 	}
 	defer outputFile.Close()
 
@@ -101,15 +97,15 @@ func (s *Service) DeleteDNS(ctx context.Context, req *dnsp.DeleteDNSRequest) (*d
 		_, err := writer.WriteString(line + "\n")
 		if err != nil {
 			log.Error("Failed write file", "error", err)
-			return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+			return &emptypb.Empty{}, err
 		}
 	}
 
 	if err := writer.Flush(); err != nil {
 		log.Error("Failed flush", "error", err)
-		return &dnsp.DeleteDNSReply{ErrorMessage: err.Error()}, err
+		return &emptypb.Empty{}, err
 	}
 
 	log.Info("Successfully deleted DNS", "dns", req.Dns)
-	return &dnsp.DeleteDNSReply{ErrorMessage: ""}, nil
+	return &emptypb.Empty{}, nil
 }
