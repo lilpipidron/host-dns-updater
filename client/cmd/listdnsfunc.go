@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func getDNSList() []string {
+func getDNSList() ([]string, error) {
 	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Error("did not connect: %v", err)
@@ -18,8 +18,7 @@ func getDNSList() []string {
 	dnsClient := dns.NewDNSServiceClient(conn)
 	list, err := dnsClient.GetListDNS(context.Background(), &empty.Empty{})
 	if err != nil {
-		log.Error("Failed to get DNS List", "error", err)
+		return nil, err
 	}
-
-	return list.DnsList
+	return list.DnsList, nil
 }
