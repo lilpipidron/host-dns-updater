@@ -43,7 +43,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dnsAddDNSReply"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -75,7 +76,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/dnsDeleteDNSReply"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -100,14 +102,6 @@
     }
   },
   "definitions": {
-    "dnsAddDNSReply": {
-      "type": "object",
-      "properties": {
-        "errorMessage": {
-          "type": "string"
-        }
-      }
-    },
     "dnsAddDNSRequest": {
       "type": "object",
       "properties": {
@@ -124,14 +118,6 @@
           "items": {
             "type": "string"
           }
-        }
-      }
-    },
-    "dnsDeleteDNSReply": {
-      "type": "object",
-      "properties": {
-        "errorMessage": {
-          "type": "string"
         }
       }
     },

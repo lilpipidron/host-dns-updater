@@ -23,7 +23,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/hostnameSetHostnameReply"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -48,14 +49,6 @@
     }
   },
   "definitions": {
-    "hostnameSetHostnameReply": {
-      "type": "object",
-      "properties": {
-        "errorMesage": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {

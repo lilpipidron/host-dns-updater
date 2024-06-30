@@ -30,8 +30,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DNSServiceClient interface {
 	GetListDNS(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*DNSListReply, error)
-	DeleteDNS(ctx context.Context, in *DeleteDNSRequest, opts ...grpc.CallOption) (*DeleteDNSReply, error)
-	AddDNS(ctx context.Context, in *AddDNSRequest, opts ...grpc.CallOption) (*AddDNSReply, error)
+	DeleteDNS(ctx context.Context, in *DeleteDNSRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddDNS(ctx context.Context, in *AddDNSRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type dNSServiceClient struct {
@@ -52,9 +52,9 @@ func (c *dNSServiceClient) GetListDNS(ctx context.Context, in *emptypb.Empty, op
 	return out, nil
 }
 
-func (c *dNSServiceClient) DeleteDNS(ctx context.Context, in *DeleteDNSRequest, opts ...grpc.CallOption) (*DeleteDNSReply, error) {
+func (c *dNSServiceClient) DeleteDNS(ctx context.Context, in *DeleteDNSRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteDNSReply)
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, DNSService_DeleteDNS_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -62,9 +62,9 @@ func (c *dNSServiceClient) DeleteDNS(ctx context.Context, in *DeleteDNSRequest, 
 	return out, nil
 }
 
-func (c *dNSServiceClient) AddDNS(ctx context.Context, in *AddDNSRequest, opts ...grpc.CallOption) (*AddDNSReply, error) {
+func (c *dNSServiceClient) AddDNS(ctx context.Context, in *AddDNSRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AddDNSReply)
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, DNSService_AddDNS_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -77,8 +77,8 @@ func (c *dNSServiceClient) AddDNS(ctx context.Context, in *AddDNSRequest, opts .
 // for forward compatibility
 type DNSServiceServer interface {
 	GetListDNS(context.Context, *emptypb.Empty) (*DNSListReply, error)
-	DeleteDNS(context.Context, *DeleteDNSRequest) (*DeleteDNSReply, error)
-	AddDNS(context.Context, *AddDNSRequest) (*AddDNSReply, error)
+	DeleteDNS(context.Context, *DeleteDNSRequest) (*emptypb.Empty, error)
+	AddDNS(context.Context, *AddDNSRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedDNSServiceServer()
 }
 
@@ -89,10 +89,10 @@ type UnimplementedDNSServiceServer struct {
 func (UnimplementedDNSServiceServer) GetListDNS(context.Context, *emptypb.Empty) (*DNSListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListDNS not implemented")
 }
-func (UnimplementedDNSServiceServer) DeleteDNS(context.Context, *DeleteDNSRequest) (*DeleteDNSReply, error) {
+func (UnimplementedDNSServiceServer) DeleteDNS(context.Context, *DeleteDNSRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDNS not implemented")
 }
-func (UnimplementedDNSServiceServer) AddDNS(context.Context, *AddDNSRequest) (*AddDNSReply, error) {
+func (UnimplementedDNSServiceServer) AddDNS(context.Context, *AddDNSRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddDNS not implemented")
 }
 func (UnimplementedDNSServiceServer) mustEmbedUnimplementedDNSServiceServer() {}

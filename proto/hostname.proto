@@ -2,21 +2,18 @@ syntax = "proto3";
 
 package hostname;
 option go_package = "service/hostname";
+import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 service HostnameService {
-  rpc SetHostName(SetHostnameRequest) returns (SetHostnameReply) {
-      option(google.api.http) = {
-        post: "/hostname"
-      };
-    }
+  rpc SetHostName(SetHostnameRequest) returns (google.protobuf.Empty) {
+    option(google.api.http) = {
+      post: "/hostname"
+    };
+  }
 }
 
 message SetHostnameRequest {
   string hostname = 1;
-}
-
-message SetHostnameReply {
-  string error_mesage = 1;
 }
 
 

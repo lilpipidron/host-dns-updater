@@ -11,13 +11,13 @@ service DNSService{
         get: "/dns"
       };
     }
-  rpc DeleteDNS(DeleteDNSRequest) returns (DeleteDNSReply) {
+  rpc DeleteDNS(DeleteDNSRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
         delete: "/dns/{dns}"
     };
   }
 
-  rpc AddDNS(AddDNSRequest) returns (AddDNSReply) {
+  rpc AddDNS(AddDNSRequest) returns (google.protobuf.Empty) {
       option(google.api.http) = {
         post: "/dns"
         body: "*"
@@ -33,14 +33,7 @@ message DeleteDNSRequest {
   string dns = 1;
 }
 
-message DeleteDNSReply {
-  string error_message = 1;
-}
-
 message AddDNSRequest {
   string dns = 1;
 }
 
-message AddDNSReply {
-  string error_message = 1;
-}
