@@ -1,15 +1,15 @@
-# Host-DNS-Updater
+# host-dns-updater
 
 ## Usage
 
 ### Install
-```go
-    git clone github.com/lilpipidron/Host-DNS-Updater
+```
+    git clone https://github.com/lilpipidron/Host-DNS-Updater
 ```
 
 ### Build service
 ```
-    cd Host-DNS-Updateer/service/cmd
+    cd host-dns-updater/service/cmd
     go build -o service
 ```
 
