@@ -3,8 +3,8 @@
 ## Usage
 
 ### Install
-```go
-    git clone github.com/lilpipidron/Host-DNS-Updater
+```
+    git clone https://github.com/lilpipidron/Host-DNS-Updater
 ```
 
 ### Build service
