@@ -1,7 +1,3 @@
-/*
-Copyright © 2024 lociX55Lim@gmail.com
-
-*/
 package cmd
 
 import (
@@ -10,9 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "client",
 	Short: "A brief description of your application",
@@ -47,5 +40,3 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-

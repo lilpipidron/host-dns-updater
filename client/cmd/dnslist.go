@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -9,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// dnslistCmd represents the dnslist command
 var dnslistCmd = &cobra.Command{
 	Use:   "dnslist",
 	Short: "show dns list",
