@@ -1,22 +1,21 @@
 package cmd
 
 import (
-	"log"
-
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
 var deletednsCmd = &cobra.Command{
-	Use:   "deletedns",
-	Short: "delete dns",
-	Long:  "The function accepts DNS and removes it, can accept several",
+	Use:   "delete-dns",
+	Short: "Deletes specified DNS",
+	Long:  "Command accepts one (or list of) DNS and removes them from the list",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, dns := range args {
 			if err := deleteDNS(dns); err != nil {
-				log.Printf("failed delete dns %s: %s", dns, err.Error())
+				fmt.Printf("failed delete dns %s: %v", dns, err)
 			} else {
-				log.Printf("successfully delte dns %s", dns)
+				fmt.Printf("successfully delete dns %s", dns)
 			}
 		}
 	},

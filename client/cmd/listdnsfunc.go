@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"context"
-	"github.com/charmbracelet/log"
+	"fmt"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/lilpipidron/Host-DNS-Updater/proto/service/dns"
 	"google.golang.org/grpc"
@@ -12,7 +12,8 @@ import (
 func getDNSList() ([]string, error) {
 	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Error("did not connect: %v", err)
+		fmt.Printf("did not connect: %v", err)
+		return nil, err
 	}
 	defer conn.Close()
 	dnsClient := dns.NewDNSServiceClient(conn)

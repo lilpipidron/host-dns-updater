@@ -1,21 +1,20 @@
 package cmd
 
 import (
-	"log"
-
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
 var adddnsCmd = &cobra.Command{
-	Use:   "adddns",
-	Short: "add dns",
-	Long:  "The function accepts and adds dns, maybe several at once",
+	Use:   "add-dns",
+	Short: "Add a DNS to the list",
+	Long:  "Command accepts one (or list of) DNS and adds them to the list",
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, dns := range args {
 			if err := addDNS(dns); err != nil {
-				log.Printf("Failed add dns %s: %s", dns, err.Error())
+				fmt.Printf("Failed add dns %s: %v", dns, err)
 			} else {
-				log.Printf("Successfully add dns %s", dns)
+				fmt.Printf("Successfully add dns %s", dns)
 			}
 		}
 	},
